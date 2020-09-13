@@ -69,10 +69,8 @@ def evaluate_pronoun(sentence):
 
 	for i, token in enumerate(tokens):
 		if token in pronouns:
-			print(f"tokens[i] {tokens[i]} before")
 			tokens[i] = pronouns[token]
-			print(f"tokens[i] {tokens[i]} after")
-	print(' '.join(tokens))
+	
 	return ' '.join(tokens)
 
 def main():
