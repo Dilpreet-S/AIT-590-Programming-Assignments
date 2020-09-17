@@ -1,9 +1,7 @@
 import re
 import random
 from nltk.tokenize import word_tokenize
-from nltk.tag import pos_tag
 
-global last_response
 pronouns = {
 	"you": "me",
 	"me": "you",
@@ -85,7 +83,6 @@ def greeting():
 			if name == "":
 				print("Please give me your name! :)")
 				continue
-			#elif name != 'quit' and name != 'Quit':
 			elif not quit:
 				greeting_name = greeting_validation(name, check_y=True)
 				if greeting_name == "Incorrect":
@@ -94,7 +91,7 @@ def greeting():
 				else:
 					correct_name = True
 			else:
-				#print("Thank you for visiting")
+				
 				bye()
 				exit()
 	message = ""
@@ -105,8 +102,7 @@ def greeting():
 	return message
 
 def greeting_validation(name, check_y):
-	#pattern = r'\b[Mm]y name is (.+)\b'
-
+	
 	name_count = name.split()
 
 	if (len(name_count) > 1):
@@ -118,7 +114,7 @@ def greeting_validation(name, check_y):
 			return "Incorrect"
 	else:
 		if check_y:
-			#print("At y")
+			
 			pattern_2 = r'\b([A-z]+)\b'
 			y = re.match(pattern_2,name)
 			if y:
@@ -146,7 +142,7 @@ def generate_response(user_response,last_response):
 
 	valid_status = check_validity(user_response)
 	user_response = replace_punctuation(user_response)
-	#print(f"valid_status {valid_status}")
+	
 	if valid_status == "valid":
 
 		for pattern, reponse in possible_responses.items():
@@ -161,8 +157,8 @@ def generate_response(user_response,last_response):
 				reponse_message = bot_response.format(*[evaluate_pronoun(s)])
 				return reponse_message
 	else:
-		#print("at else")
-		reponse_message = valid_status #+ "\n" + last_response
+		
+		reponse_message = valid_status 
 		return reponse_message
 
 
@@ -181,9 +177,9 @@ def check_validity(message):
 	valid_message = "valid"
 	message_1 = message.strip()
 	greeting_check = greeting_validation(message, check_y=False)
-	#print(f"greeting_check {greeting_check}")
+	
 	if greeting_check != None and greeting_check != "Incorrect":
-		#print("at greeting_check")
+		
 		valid_message = f"Hello {message}, How are you feeling today?"
 		return valid_message
 	return valid_message
@@ -197,46 +193,36 @@ def bye():
 def main():
 
 	greeting_message = greeting()
-	#last_response = message
 	last_response = greeting_message
 	message = greeting_message
+
 	matching_resonse = False
 	last_question = None
+
 	quit_pattern = r'[Qq]uit;?'
 	quit = re.match(quit_pattern,message)
-	#while message != 'quit':
+
+	
 	while not quit:
-		#response_question = generate_response(str(message),last_response)
 		if message == "":
-			#print(f"Message {message}")
-			#response_question = generate_response(str(last_response),last_response=None)
 			print("You have to tell me something! :)")
 			message = input(f"{response_question}\n>>")
 			continue
 		else:
-			#message = input(f"{response_question}\n>>")
-			#if last_question is None:
+
 			if matching_resonse:
 				response_question = last_question
-				#response_question = generate_response(str(message),last_response)
-				#message = input(f"{response_question}\n>>")
 			else:
 				response_question = generate_response(str(message),last_response)
-				#response_question = last_question
-				#last_question = None
+
 			message = input(f"{response_question}\n>>")
 			if last_response == message :
 				print("You can't repeat yourself! :)\nPlease response to the response below....")
-				#print(f"last_response: {last_response}")
 				last_question = response_question
 				matching_resonse = True
 			else:
 				matching_resonse = False
-			#message = input(f"{response_question}\n>>")
-			#response_question = generate_response(str(message),last_response)
-			#message = input(f"{response_question}\n>>")
 
-			#continue
 			last_response = message
 		quit = re.match(quit_pattern,message)
 	bye()
